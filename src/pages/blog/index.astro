@@ -1,0 +1,34 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content"
+
+import PostCard from "@/components/PostCard.astro"
+import { SITE_METADATA } from "@/constants"
+import Layout from "@/layouts/Layout.astro"
+
+const posts = await getCollection("posts", ({ data }: CollectionEntry<"posts">) => {
+  return import.meta.env.PROD ? !data.draft : true
+}).then((posts: CollectionEntry<"posts">[]) => {
+  return posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+})
+---
+
+<Layout title={SITE_METADATA.title} description={SITE_METADATA.description}>
+  <div class="container">
+    <div class="py-10 text-center">
+      <h2 class="text-4xl font-bold">Welcome to My Blog</h2>
+      <p class="mt-4 text-muted-foreground" style="text-wrap: balance;">
+        Stay updated with the newest design and development stories, case studies and insights
+      </p>
+    </div>
+    <ul class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {
+        posts.map((post) => {
+          const { date, image, description, tags, title } = post.data
+          return (
+            <PostCard title={title} image={image} date={date} description={description} tags={tags} slug={post.slug} />
+          )
+        })
+      }
+    </ul>
+  </div>
+</Layout>

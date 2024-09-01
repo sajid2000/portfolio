@@ -1,0 +1,75 @@
+---
+import { Image } from "astro:assets"
+import { getCollection, getEntry } from "astro:content"
+
+import FormattedDate from "@/components/FormattedDate.astro"
+import Layout from "@/layouts/Layout.astro"
+import { excludeDrafts } from "@/lib/utils"
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts", excludeDrafts)
+  return posts.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }))
+}
+
+const { entry } = Astro.props
+const { Content, remarkPluginFrontmatter } = await entry.render()
+const author = await getEntry("authors", entry.data.author.id)
+
+const { date, image, description, title } = entry.data
+---
+
+<Layout title={title} description={description}>
+  <article class="container grid gap-6 pt-10 lg:grid-cols-6">
+    <div class="overflow-hidden lg:col-span-4">
+      <div class="mb-10 space-y-2 text-center">
+        <h2 transition:name="slide" class="text-4xl font-semibold tracking-tight">
+          {entry.data.title}
+        </h2>
+        <div class="flex justify-center gap-3">
+          <div>
+            By
+            <span class="font-bold">{author.data.name}</span>
+          </div>
+           -
+          <dl>
+            <dt class="sr-only">Published on</dt>
+            <dd>
+              <FormattedDate date={date} />
+            </dd>
+          </dl>
+           -
+          <span>
+            {Math.round(remarkPluginFrontmatter?.estReadingTime) || "5"} min read
+          </span>
+        </div>
+      </div>
+      <Image src={image.url} alt={image.alt} height={200} width={200} class="h-auto w-full max-w-full object-cover" />
+      <div class="md:prose-md prose prose-pink mt-8 min-w-full dark:prose-invert lg:prose-lg prose-pre:grid">
+        <Content />
+      </div>
+    </div>
+    <div class="lg:col-span-2">
+      <div class="sticky top-10 space-y-8">
+        <input type="text" class="rounded-md bg-muted p-2" placeholder="Search..." />
+        <div>
+          <h3 class="text-2xl">Recent Post</h3>
+          <ul>
+            <li>Post one</li>
+            <li>Post two</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-2xl">Tags</h3>
+
+          <ul>
+            <li>Tag one</li>
+            <li>Tag two</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+</Layout>

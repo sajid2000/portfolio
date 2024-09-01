@@ -1,0 +1,42 @@
+---
+import { Image } from "astro:assets"
+
+import FormattedDate from "@/components/FormattedDate.astro"
+import Tag from "@/components/Tag.astro"
+
+type Props = {
+  title: string
+  date: Date
+  description: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tags: Array<any>
+  slug: string
+  image: {
+    url?: string
+    alt?: string
+  }
+}
+
+const { date, title, image, tags, slug } = Astro.props
+---
+
+<li class="rounded-md bg-card p-4 shadow-md shadow-black/50">
+  <article class="space-y-4">
+    <Image src={image.url} alt={image.alt} height={200} width={200} class="mb-2 h-[250px] w-full object-cover" />
+    {tags.map(({ slug }) => <Tag slug={slug} />)}
+    <a href={`/blog/${slug}`} class="block text-primary">
+      <h3 transition:name="slide" class="text-2xl font-semibold tracking-wide">
+        {title}
+      </h3>
+    </a>
+    <div class="flex justify-between">
+      <dl>
+        <dt class="sr-only">Published on</dt>
+        <dd class="text-base font-medium leading-6">
+          <FormattedDate date={date} />
+        </dd>
+      </dl>
+      <a href={`/blog/${slug}`} aria-label={`Read "${title}"`}> Read more &rarr;</a>
+    </div>
+  </article>
+</li>

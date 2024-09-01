@@ -1,0 +1,65 @@
+---
+import { Image } from "astro:assets"
+
+type Props = {
+  name: string
+  order: number
+  image: string
+  description: string
+  tech: Array<string>
+  link: string
+}
+
+const { description, image, link, name, order, tech } = Astro.props
+---
+
+<div class="mx-auto grid max-w-lg items-center gap-10 rounded-2xl bg-card p-8 md:max-w-none md:grid-cols-2">
+  <div class={`${order === 1 ? "md:order-1" : "md:order-0"}`}>
+    <Image
+      src={image}
+      alt=""
+      height={200}
+      width={200}
+      class="w-full rounded-2xl object-cover drop-shadow-[0_0_3rem_teal]"
+    />
+  </div>
+  <div class={`${order === 1 ? "md:order-0" : "md:order-1"} flex flex-col gap-6 p-2 `}>
+    <h3 class="text-2xl font-bold leading-none text-primary">{name}</h3>
+
+    <p class="tracking-wide">{description}</p>
+
+    <div class="flex flex-wrap gap-2">
+      {
+        tech.map((i) => (
+          <span class="whitespace-nowrap rounded-md border border-accent p-1 text-xs uppercase text-foreground shadow-md shadow-accent">
+            {i}
+          </span>
+        ))
+      }
+    </div>
+
+    <div class="flex gap-2">
+      <a
+        href={link}
+        target="_blank"
+        class="flex flex-nowrap items-center gap-2 rounded-md border border-primary px-4 py-2 text-foreground transition hover:bg-accent"
+        rel="noreferrer"
+      >
+        View Code
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 24 24"
+          height="1.5em"
+          width="1.5em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m7.375 16.781 1.25-1.562L4.601 12l4.024-3.219-1.25-1.562-5 4a1 1 0 0 0 0 1.562l5 4zm9.25-9.562-1.25 1.562L19.399 12l-4.024 3.219 1.25 1.562 5-4a1 1 0 0 0 0-1.562l-5-4zm-1.649-4.003-4 18-1.953-.434 4-18z"
+            stroke="none"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>

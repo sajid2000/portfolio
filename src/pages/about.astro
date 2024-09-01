@@ -1,0 +1,78 @@
+---
+import { Image } from "astro:assets"
+
+import { SITE_METADATA } from "@/constants"
+import Layout from "@/layouts/Layout.astro"
+
+const skills = [
+  {
+    title: "Front End",
+    tech: ["React Js", "Next Js", "Redux", "Tailwindcss", "Material UI"],
+  },
+  {
+    title: "Back End",
+    tech: ["PHP Laravel", "Node JS", "GraphQL", "MySQL", "MongoDB"],
+  },
+  {
+    title: "Others",
+    tech: ["Git", "Github", "Typescript", "Testing"],
+  },
+]
+---
+
+<Layout>
+  <div class="container mt-32">
+    <div class="grid gap-20 lg:grid-cols-3">
+      <Image src="/static/about.png" alt="Here image" width={300} height={300} class="h-auto lg:col-span-1" />
+      <div class="space-y-4 lg:col-span-2">
+        <h3 class="font-medium555 uppercase tracking-wider">About Me</h3>
+        <h2 class="text-3xl font-bold leading-none text-primary md:text-4xl">A dedicated Web Developer</h2>
+
+        <p style="text-wrap: balance;">
+          I'm a self-motivated
+          <strong>Full-Stack Web Developer</strong>
+           with experience in Node Js, Next Js, React Js and Laravel(PHP). I'm self-driven & quick learner. Able to play
+          a key role in website development to ensure maximum accessibility,user experience and usability. A
+          quick-learner who can absorb new ideas and can communicate clearly and effectively.
+        </p>
+        <div class="grid grid-cols-2 gap-6 pt-8">
+          <div>
+            <b class="mb-1 block uppercase">Name</b>
+            <p>{SITE_METADATA.author}</p>
+          </div>
+          <div>
+            <b class="mb-1 block uppercase">Email</b>
+            <a href={`mailto:${SITE_METADATA.email}`} class="block text-foreground">{SITE_METADATA.email}</a>
+          </div>
+          <div>
+            <b class="mb-1 block uppercase">Employment</b>
+            <p>Open</p>
+          </div>
+          <div>
+            <b class="mb-1 block uppercase">Education</b>
+            <p>BSS (Hons.) in Economics</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="mb-20 mt-44 text-center text-3xl font-semibold text-primary md:text-4xl">Technical Skills</h3>
+
+    <div class="grid place-items-center space-y-10 text-center">
+      {
+        skills.map((i) => (
+          <div class="">
+            <h3 class="mb-4 text-xl font-medium">{i.title}</h3>
+            <div class="flex flex-wrap justify-center gap-6">
+              {i.tech.map((i) => (
+                <p class="flex h-28 w-28 cursor-pointer items-center justify-center border border-primary p-1 text-secondary-foreground shadow-md shadow-primary">
+                  {i}
+                </p>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Layout>

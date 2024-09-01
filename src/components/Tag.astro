@@ -1,0 +1,18 @@
+---
+import { type CollectionEntry, getEntry } from "astro:content"
+
+interface Props {
+  tag?: CollectionEntry<"tags">
+  slug?: CollectionEntry<"tags">["slug"]
+}
+let tag = Astro.props.tag
+
+if (!tag && Astro.props.slug) {
+  tag = await getEntry("tags", Astro.props.slug)
+}
+const { slug, data } = tag
+---
+
+<a href={`/tags/${slug}`} class="mr-3 text-xs font-medium uppercase text-foreground hover:text-pink-600">
+  {data.name}
+</a>

@@ -1,0 +1,29 @@
+---
+import { NAVIGATION } from "@/constants"
+
+import MobileNav from "./MobileNav.astro"
+import NavLink from "./NavLink.astro"
+import ThemeSwitcher from "./ThemeSwitcher.astro"
+---
+
+<header class="container flex items-center justify-between py-5">
+  <div>
+    <a href="/" aria-label="Sajid.Dev" class="text-primary">
+      <div class="flex items-center justify-between">
+        <div class="h-6 text-2xl font-semibold text-primary">Sajid.Dev</div>
+      </div>
+    </a>
+  </div>
+  <div class="flex items-center space-x-4 leading-5 sm:space-x-6">
+    {
+      NAVIGATION.map((link) => (
+        <NavLink href={link.href} class="hidden font-medium sm:block">
+          {link.title}
+        </NavLink>
+      ))
+    }
+
+    <ThemeSwitcher />
+    <MobileNav />
+  </div>
+</header>
